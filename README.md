@@ -22,7 +22,7 @@ import daterecognition.formats as FORMATS
 
 dp = Parser(formats=FORMATS.USA, start_year=2015, end_year=2020) 
 # or provide list of date formats in 1989 C Standard
-dp = Parser(formats=[r"%b %d, %Y"], start_year=2015, end_year=2020)
+dp = Parser(formats=[r"%B %-d, %Y"], start_year=2015, end_year=2020)
 
 query = "Today is April 1, 2020"
 dates = dp.parse_string(query)
