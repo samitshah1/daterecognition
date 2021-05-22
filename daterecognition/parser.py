@@ -1,11 +1,10 @@
-import re
 import copy
 import daterecognition.formats as FORMATS
 
 
 class CoreDateParser:
     """
-        CoreDateParser class is used to detect dates in strings. 
+        CoreDateParser class is used to detect dates in strings.
         CoreDateParser can be initialized with multiple date formats specified in 1989 C standard.
 
         Usage:
@@ -55,8 +54,7 @@ class CoreDateParser:
             "%d": self.get_dates(n_digits=2),
             "%-d": self.get_dates(),
             "%Y": self.get_year_value(start_year=self.start_year, end_year=self.end_year),
-            "%B": ["january", "february", "march", "april", "may", "june", "july", "august", "september", 
-                    "october", "november", "december"],
+            "%B": ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"],
             "%m": self.get_months(),
             "%-m": self.get_months(n_digits=1),
             "%y": self.get_year_value(start_year=self.start_year, end_year=self.end_year, n_digits=2),
@@ -67,20 +65,20 @@ class CoreDateParser:
     def get_ordinals(self):
         "Returns ordinal map"
         return [
-            "1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th", "11th", 
-            "12th", "13th", "14th", "15th", "16th", "17th", "18th", "19th", "20th", 
+            "1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th", "11th",
+            "12th", "13th", "14th", "15th", "16th", "17th", "18th", "19th", "20th",
             "21st", "22nd", "23rd", "24th", "25th", "26th", "27th", "28th", "29th", "30th", "31st"
         ]
-        
+
     def get_year_value(self, start_year=1900, end_year=2100, n_digits=4):
         "Returns 2-digit and 4-digit years"
         if n_digits == 4:
-            return [str(d) for d in range(start_year, end_year+1)]
+            return [str(d) for d in range(start_year, end_year + 1)]
         else:
             if end_year - start_year >= 100:
                 return ["{:02d}".format(d) for d in range(0, 100)]
             else:
-                return ["{:02d}".format(int(str(d)[2:])) for d in range(start_year, end_year+1)]
+                return ["{:02d}".format(int(str(d)[2:])) for d in range(start_year, end_year + 1)]
 
     def get_dates(self, n_digits=1):
         "Returns single-digit or 2-digit dates"
@@ -106,7 +104,7 @@ class CoreDateParser:
             if sub_string in orig_string:
                 ret_list.append((sub_string, orig_string.index(
                     sub_string), orig_string.index(sub_string) + len(sub_string) - 1, pattern))
-                qs = copy.deepcopy(orig_string[:orig_string.index(sub_string)] + " "*len(
+                qs = copy.deepcopy(orig_string[:orig_string.index(sub_string)] + " " * len(
                     sub_string) + orig_string[orig_string.index(sub_string) + len(sub_string):])
                 flag = True
             if not flag:
@@ -145,7 +143,7 @@ class CoreDateParser:
 
     def get_match_tokens(self, priority_matches, token_spans):
         """
-            Find character and token indices. 
+            Find character and token indices.
             Indices are inclusive and start from 0.
         """
         ret_list = []
@@ -157,11 +155,11 @@ class CoreDateParser:
                 end_token = -1
                 for idx in token_spans:
                     if (char_start >= token_spans[idx][1] and char_start <= token_spans[idx][2]) or \
-                    (char_end >= token_spans[idx][1] and char_end <= token_spans[idx][2]):
+                            (char_end >= token_spans[idx][1] and char_end <= token_spans[idx][2]):
                         start_token = min(start_token, token_spans[idx][3])
                         end_token = max(end_token, token_spans[idx][3])
                 ret_list.append(list(pm) + [start_token, end_token])
-        ret_list = sorted(ret_list, key=lambda x: x[2]-x[1], reverse=True)
+        ret_list = sorted(ret_list, key=lambda x: x[2] - x[1], reverse=True)
         final_ret_list = []
         for rl in ret_list:
             flag = False
@@ -198,11 +196,12 @@ class CoreDateParser:
             ret_obj[idx] = (k, query_string.index(
                 k), query_string.index(k) + len(k), idx)
             query_string = query_string[:query_string.index(
-                k)] + " "*len(k) + query_string[query_string.index(k) + len(k):]
+                k)] + " " * len(k) + query_string[query_string.index(k) + len(k):]
         return ret_obj
 
+
 if __name__ == "__main__":
-    dp = CoreDateParser([r"%b %d %Y",r"%b %-d %Y"],start_year=2015,end_year=2015)
+    dp = CoreDateParser([r"%b %d %Y", r"%b %-d %Y"], start_year=2015, end_year=2015)
     query_string = "Dec 1 2015-Dec 1 2015"
     print(query_string)
     print(dp.parse_string(query_string))
