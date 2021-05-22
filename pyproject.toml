@@ -1,9 +1,11 @@
 [tool.poetry]
 name = "daterecognition"
 version = "0.1.1"
-description = ""
+description = "DateRecognition is a Pure-Python library for extracting dates from strings."
 authors = ["Samit Shah <samitshah1@gmail.com>"]
 license = "MIT"
+repository = "https://github.com/samitshah1/daterecognition"
+keywords = ["date extraction","python"]
 
 [tool.poetry.dependencies]
 python = "^3.6"
